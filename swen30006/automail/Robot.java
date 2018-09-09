@@ -129,7 +129,9 @@ public abstract class Robot {
      * @param destination the floor towards which the robot is moving
      */
     private void moveTowards(int destination) throws FragileItemBrokenException {
-        if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
+    	if (!this.careful) {
+    		if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
+    	}
         if(current_floor < destination){
             current_floor++;
         }
