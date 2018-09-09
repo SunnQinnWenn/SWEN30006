@@ -46,7 +46,6 @@ public class MyMailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
-	private static final int MAX_TAKE = 4;
 	private LinkedList<Robot> robots;
 	private int lightCount;
 
@@ -75,7 +74,6 @@ public class MyMailPool implements IMailPool {
 		try { // Get as many items as available or as fit
 				if (robot.isStrong()) {
 					while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
-						System.out.println("CCCCCC");
 						Item item = pool.remove();
 						if (!item.heavy) lightCount--;
 						temp.addItem(item.mailItem);
