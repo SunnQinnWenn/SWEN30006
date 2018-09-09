@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
  * This class simulates the behaviour of AutoMail
  */
 public class Simulation {
-// test
 	public enum RobotType { Big, Careful, Standard, Weak };
 	
 	
