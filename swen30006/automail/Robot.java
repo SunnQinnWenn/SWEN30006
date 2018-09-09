@@ -10,7 +10,7 @@ import java.util.TreeMap;
 /**
  * The robot delivers mail!
  */
-public class Robot {
+public abstract class Robot {
 
 	StorageTube tube;
     IMailDelivery delivery;
@@ -23,6 +23,7 @@ public class Robot {
     private IMailPool mailPool;
     private boolean receivedDispatch;
     private boolean strong;
+    private boolean careful;
     
     private MailItem deliveryItem;
     
@@ -37,25 +38,21 @@ public class Robot {
      * @param mailPool is the source of mail items
      * @param strong is whether the robot can carry heavy items
      */
-    public Robot(IMailDelivery delivery, IMailPool mailPool, boolean strong){
+    public Robot(IMailDelivery delivery, IMailPool mailPool){
     	id = "R" + hashCode();
         // current_state = RobotState.WAITING;
     	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
-        tube = new StorageTube();
         this.delivery = delivery;
         this.mailPool = mailPool;
         this.receivedDispatch = false;
-        this.strong = strong;
+        this.strong = false;
+        this.careful = false;
         this.deliveryCounter = 0;
     }
     
     public void dispatch() {
     	receivedDispatch = true;
-    }
-    
-    public boolean isStrong() {
-    	return strong;
     }
 
     /**
@@ -142,7 +139,7 @@ public class Robot {
     }
     
     private String getIdTube() {
-    	return String.format("%s(%1d/%1d)", id, tube.getSize(), tube.MAXIMUM_CAPACITY);
+    	return String.format("%s(%1d/%1d)", id, tube.getSize(), tube.getCapacity());
     }
     
     /**
@@ -172,5 +169,25 @@ public class Robot {
 		Integer hash = hashMap.get(hash0);
 		if (hash == null) { hash = count++; hashMap.put(hash0, hash); }
 		return hash;
+	}
+	
+	protected void createTube(StorageTube tube) {
+		this.tube = tube;
+	}
+	
+	protected void setStrong(Boolean strong) {
+		this.strong = strong;
+	}
+	
+	protected void setCareful(Boolean careful) {
+		this.careful = careful;
+	}
+	
+	public boolean isStrong() {
+    	return strong;
+    }
+	
+	public boolean isCareful() {
+		return careful;
 	}
 }

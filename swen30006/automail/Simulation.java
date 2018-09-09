@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class Simulation {
 
-	private enum RobotType { Big, Careful, Standard, Weak };
+	public enum RobotType { Big, Careful, Standard, Weak };
 	
 	
     /** Constant for the mail generator */
@@ -93,7 +93,7 @@ public class Simulation {
         }
         Integer seed = seedMap.get(true);
         System.out.printf("Seed: %s%n", seed == null ? "null" : seed.toString());
-        Automail automail = new Automail(mailPool, new ReportDelivery());
+        Automail automail = new Automail(mailPool, new ReportDelivery(), robotTypes);
         MailGenerator mailGenerator = new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
         
         /** Initiate all the mail */
