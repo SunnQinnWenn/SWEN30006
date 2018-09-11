@@ -12,19 +12,22 @@ import java.util.TreeMap;
  */
 public abstract class Robot {
 
-	StorageTube tube;
     IMailDelivery delivery;
+    private IMailPool mailPool;
+    StorageTube tube;
+    private boolean strong;
+    private boolean careful;
+
+
     protected final String id;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
     public RobotState current_state;
     private int current_floor;
     private int destination_floor;
-    private IMailPool mailPool;
+
     private boolean receivedDispatch;
-    private boolean strong;
-    private boolean careful;
-    
+
     private MailItem deliveryItem;
     
     private int deliveryCounter;
@@ -38,6 +41,8 @@ public abstract class Robot {
      * @param mailPool is the source of mail items
      * @param strong is whether the robot can carry heavy items
      */
+
+    /*
     public Robot(IMailDelivery delivery, IMailPool mailPool){
     	id = "R" + hashCode();
         // current_state = RobotState.WAITING;
@@ -50,7 +55,28 @@ public abstract class Robot {
         this.careful = false;
         this.deliveryCounter = 0;
     }
-    
+     */
+
+    public Robot(IMailDelivery delivery, IMailPool mailPool, boolean careful, boolean strong){
+        this.delivery = delivery;
+        this.mailPool = mailPool;
+        this.careful = careful;
+        this.strong = strong;
+
+        this.id = "R" + hashCode();
+        // current_state = RobotState.WAITING;
+        this.current_state = RobotState.RETURNING;
+        this.current_floor = Building.MAILROOM_LOCATION;
+        this.receivedDispatch = false;
+        this.deliveryCounter = 0;
+    }
+
+    // default contructor
+    public Robot(){
+        this.id = "";
+    }
+
+
     public void dispatch() {
     	receivedDispatch = true;
     }
@@ -93,7 +119,7 @@ public abstract class Robot {
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(deliveryItem);
                     deliveryCounter++;
-                    if(deliveryCounter > 4){  // Implies a simulation bug
+                    if(deliveryCounter > this.tube.getCapacity()){  // Implies a simulation bug
                     	throw new ExcessiveDeliveryException();
                     }
                     /** Check if want to return, i.e. if there are no more items in the tube*/
@@ -170,7 +196,8 @@ public abstract class Robot {
 		if (hash == null) { hash = count++; hashMap.put(hash0, hash); }
 		return hash;
 	}
-	
+
+
 	protected void createTube(StorageTube tube) {
 		this.tube = tube;
 	}

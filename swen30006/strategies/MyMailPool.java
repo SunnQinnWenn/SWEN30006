@@ -46,7 +46,7 @@ public class MyMailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
-	private static final int MAX_TAKE = 4;
+//	private static final int MAX_TAKE = 4;
 	private LinkedList<Robot> robots;
 	private int lightCount;
 
