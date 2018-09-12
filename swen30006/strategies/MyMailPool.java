@@ -17,6 +17,7 @@ public class MyMailPool implements IMailPool {
 		int priority;
 		int destination;
 		boolean heavy;
+		boolean fragile;
 		MailItem mailItem;
 		// Use stable sort to keep arrival time relative positions
 		
@@ -25,6 +26,7 @@ public class MyMailPool implements IMailPool {
 			heavy = mailItem.getWeight() >= 2000;
 			destination = mailItem.getDestFloor();
 			this.mailItem = mailItem;
+			fragile = mailItem.getFragile();
 		}
 	}
 	
@@ -46,32 +48,47 @@ public class MyMailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
+	private LinkedList<Item> fragilePool;
 	private LinkedList<Robot> robots;
 	private int lightCount;
 
 	public MyMailPool(){
 		// Start empty
 		pool = new LinkedList<Item>();
+		fragilePool = new LinkedList<Item>();
 		lightCount = 0;
 		robots = new LinkedList<Robot>();
 	}
-
+	
 	public void addToPool(MailItem mailItem) {
 		Item item = new Item(mailItem);
-		pool.add(item);
-		if (!item.heavy) lightCount++;
-		pool.sort(new ItemComparator());
+		if (item.fragile) {
+			fragilePool.add(item);
+			fragilePool.sort(new ItemComparator());
+		}
+		else {
+			pool.add(item);
+			if (!item.heavy) lightCount++;
+			pool.sort(new ItemComparator());
+		}
 	}
 	
 	@Override
 	public void step() throws FragileItemBrokenException {
 		for (Robot robot: (Iterable<Robot>) robots::iterator) { fillStorageTube(robot); }
+		System.out.println(fragilePool.size() + " " + pool.size());
 	}
 	
 	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
 		StorageTube tube = robot.getTube();
 		StorageTube temp = new StorageTube(tube.getCapacity(), tube.getCareful());
 		try { // Get as many items as available or as fit
+				if (robot.isCareful() && !fragilePool.isEmpty()) {
+					if(temp.getSize() < temp.getCapacity() && !robot.getTube().getFragile()) {
+						Item item = fragilePool.remove();
+						temp.addItem(item.mailItem);
+					}
+				}
 				if (robot.isStrong()) {
 					while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
 						Item item = pool.remove();

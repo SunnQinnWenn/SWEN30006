@@ -30,6 +30,7 @@ public class Simulation {
 
     private static ArrayList<MailItem> MAIL_DELIVERED;
     private static double total_score = 0;
+    private int deliverCount = 0;
 
     public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
     	Properties automailProperties = new Properties();

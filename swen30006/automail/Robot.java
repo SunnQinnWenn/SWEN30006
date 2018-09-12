@@ -42,9 +42,9 @@ public abstract class Robot {
     	id = "R" + hashCode();
         // current_state = RobotState.WAITING;
     	current_state = RobotState.RETURNING;
-        current_floor = Building.MAILROOM_LOCATION;
+        setCurrent_floor(Building.MAILROOM_LOCATION);
         this.delivery = delivery;
-        this.mailPool = mailPool;
+        this.setMailPool(mailPool);
         this.receivedDispatch = false;
         this.strong = false;
         this.careful = false;
@@ -64,14 +64,14 @@ public abstract class Robot {
     		/** This state is triggered when the robot is returning to the mailroom after a delivery */
     		case RETURNING:
     			/** If its current position is at the mailroom, then the robot should change state */
-                if(current_floor == Building.MAILROOM_LOCATION){
+                if(getCurrent_floor() == Building.MAILROOM_LOCATION){
                 	while(!tube.isEmpty()) {
                 		MailItem mailItem = tube.pop();
-                		mailPool.addToPool(mailItem);
+                		getMailPool().addToPool(mailItem);
                         System.out.printf("T: %3d > old addToPool [%s]%n", Clock.Time(), mailItem.toString());
                 	}
         			/** Tell the sorter the robot is ready */
-        			mailPool.registerWaiting(this);
+        			getMailPool().registerWaiting(this);
                 	changeState(RobotState.WAITING);
                 } else {
                 	/** If the robot is not at the mailroom floor yet, then move towards it! */
@@ -84,14 +84,18 @@ public abstract class Robot {
                 	receivedDispatch = false;
                 	deliveryCounter = 0; // reset delivery counter
         			setRoute();
-        			mailPool.deregisterWaiting(this);
+        			getMailPool().deregisterWaiting(this);
                 	changeState(RobotState.DELIVERING);
                 }
                 break;
     		case DELIVERING:
-    			if(current_floor == destination_floor){ // If already here drop off either way
+    			if(getCurrent_floor() == destination_floor){ // If already here drop off either way
                     /** Delivery complete, report this to the simulator! */
-                    delivery.deliver(deliveryItem);
+    				delivery.deliver(deliveryItem);
+    				if (deliveryItem.getFragile()) {
+    					this.getTube().setFragile(false);
+    				}
+                    
                     deliveryCounter++;
                     if(deliveryCounter > this.getTube().getCapacity()){  // Implies a simulation bug
                     	throw new ExcessiveDeliveryException();
@@ -128,15 +132,15 @@ public abstract class Robot {
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
      */
-    private void moveTowards(int destination) throws FragileItemBrokenException {
+    public void moveTowards(int destination) throws FragileItemBrokenException {
     	if (!this.careful) {
     		if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
     	}
-        if(current_floor < destination){
-            current_floor++;
+        if(getCurrent_floor() < destination){
+            setCurrent_floor(getCurrent_floor() + 1);
         }
         else{
-            current_floor--;
+            setCurrent_floor(getCurrent_floor() - 1);
         }
     }
     
@@ -148,7 +152,7 @@ public abstract class Robot {
      * Prints out the change in state
      * @param nextState the state to which the robot is transitioning
      */
-    private void changeState(RobotState nextState){
+    protected void changeState(RobotState nextState){
     	if (current_state != nextState) {
             System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
     	}
@@ -191,5 +195,21 @@ public abstract class Robot {
 	
 	public boolean isCareful() {
 		return careful;
+	}
+
+	public int getCurrent_floor() {
+		return current_floor;
+	}
+
+	public void setCurrent_floor(int current_floor) {
+		this.current_floor = current_floor;
+	}
+
+	public IMailPool getMailPool() {
+		return mailPool;
+	}
+
+	public void setMailPool(IMailPool mailPool) {
+		this.mailPool = mailPool;
 	}
 }

@@ -1,5 +1,7 @@
 package strategies;
 
+import java.util.LinkedList;
+
 import automail.MailItem;
 import automail.Robot;
 import exceptions.FragileItemBrokenException;

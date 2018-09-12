@@ -8,6 +8,8 @@ import automail.Robot;
 import automail.Simulation.RobotType;
 import automail.StrongRobot;
 import automail.WeakRobot;
+import automail.CarefulRobot;
+import automail.BigRobot;
 
 public class Automail {
 	      
@@ -25,9 +27,9 @@ public class Automail {
     	
     	/** Initialize robots */
     	robot = new Robot[3];
-    	robot[0] = new WeakRobot(delivery, mailPool);
+    	robot[0] = new CarefulRobot(delivery, mailPool);
     	robot[1] = new StrongRobot(delivery, mailPool);
-    	robot[2] = new WeakRobot(delivery, mailPool);
+    	robot[2] = new BigRobot(delivery, mailPool);
     }
     
 }

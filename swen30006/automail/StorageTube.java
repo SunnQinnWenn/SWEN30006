@@ -93,6 +93,10 @@ public class StorageTube {
     	return this.containFragile;
     }
     
+    public void setFragile(boolean fragility) {
+    	this.containFragile = fragility;
+    }
+    
     /** @return whether tube is held by careful robot or not **/
     public boolean getCareful() {
     	return this.careful;
