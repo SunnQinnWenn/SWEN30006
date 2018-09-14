@@ -1,9 +1,9 @@
-package strategies;
+package swen30006.strategies;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import automail.*;
+import swen30006.automail.*;
 
 public class Automail {
 	      

@@ -1,8 +1,8 @@
-package automail;
-import exceptions.ExcessiveDeliveryException;
-import exceptions.FragileItemBrokenException;
-import exceptions.ItemTooHeavyException;
-import strategies.IMailPool;
+package swen30006.automail;
+import swen30006.exceptions.ExcessiveDeliveryException;
+import swen30006.exceptions.FragileItemBrokenException;
+import swen30006.exceptions.ItemTooHeavyException;
+import swen30006.strategies.IMailPool;
 
 public class CarefulRobot extends Robot {
 

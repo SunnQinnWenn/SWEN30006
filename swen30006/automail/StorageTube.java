@@ -1,9 +1,9 @@
-package automail;
+package swen30006.automail;
 
 import java.util.Stack;
 
-import exceptions.FragileItemBrokenException;
-import exceptions.TubeFullException;
+import swen30006.exceptions.FragileItemBrokenException;
+import swen30006.exceptions.TubeFullException;
 
 public class StorageTube {
 	
@@ -108,6 +108,9 @@ public class StorageTube {
      * @return the first item in the storage tube (after removing it)
      */
     public MailItem pop(){
+    	if (this.peek().getFragile() == true) {
+    		this.setHaveFragile(false);
+    	}
         return tube.pop();
     }
 

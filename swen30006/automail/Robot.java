@@ -1,9 +1,9 @@
-package automail;
+package swen30006.automail;
 
-import exceptions.ExcessiveDeliveryException;
-import exceptions.ItemTooHeavyException;
-import exceptions.FragileItemBrokenException;
-import strategies.IMailPool;
+import swen30006.exceptions.ExcessiveDeliveryException;
+import swen30006.exceptions.ItemTooHeavyException;
+import swen30006.exceptions.FragileItemBrokenException;
+import swen30006.strategies.IMailPool;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -154,13 +154,15 @@ public abstract class Robot {
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
      */
-    private void moveTowards(int destination) throws FragileItemBrokenException {
-        if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
+    public void moveTowards(int destination) throws FragileItemBrokenException {
+    	if (!this.careful) {
+    		if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
+    	}
         if(current_floor < destination){
-            current_floor++;
+        	current_floor++;
         }
         else{
-            current_floor--;
+        	current_floor--;
         }
     }
     

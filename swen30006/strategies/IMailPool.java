@@ -1,8 +1,8 @@
-package strategies;
+package swen30006.strategies;
 
-import automail.MailItem;
-import automail.Robot;
-import exceptions.FragileItemBrokenException;
+import swen30006.automail.MailItem;
+import swen30006.automail.Robot;
+import swen30006.exceptions.FragileItemBrokenException;
 
 /**
  * addToPool is called when there are mail items newly arrived at the building to add to the MailPool or

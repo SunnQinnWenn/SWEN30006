@@ -1,4 +1,4 @@
-package exceptions;
+package swen30006.exceptions;
 
 /**
  * An exception thrown when the robot moves too fast or other items are put in the tube with this one.

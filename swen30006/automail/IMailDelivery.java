@@ -1,4 +1,4 @@
-package automail;
+package swen30006.automail;
 
 /**
  * a MailDelivery is used by the Robot to deliver mail once it has arrived at the correct location

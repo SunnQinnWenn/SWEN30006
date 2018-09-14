@@ -1,8 +1,8 @@
-package automail;
+package swen30006.automail;
 
 import java.util.*;
 
-import strategies.IMailPool;
+import swen30006.strategies.IMailPool;
 
 /**
  * This class generates the mail

@@ -1,11 +1,11 @@
-package automail;
+package swen30006.automail;
 
-import exceptions.ExcessiveDeliveryException;
-import exceptions.ItemTooHeavyException;
-import exceptions.MailAlreadyDeliveredException;
-import exceptions.FragileItemBrokenException;
-import strategies.Automail;
-import strategies.IMailPool;
+import swen30006.exceptions.ExcessiveDeliveryException;
+import swen30006.exceptions.ItemTooHeavyException;
+import swen30006.exceptions.MailAlreadyDeliveredException;
+import swen30006.exceptions.FragileItemBrokenException;
+import swen30006.strategies.Automail;
+import swen30006.strategies.IMailPool;
 
 import java.util.stream.Stream;
 import java.io.FileReader;
@@ -112,6 +112,7 @@ public class Simulation {
 				System.out.println("Simulation unable to complete.");
 				System.exit(0);
 			}
+            System.out.println(MAIL_DELIVERED.size() + " " + mailGenerator.MAIL_TO_CREATE);
             Clock.Tick();
         }
         printResults();

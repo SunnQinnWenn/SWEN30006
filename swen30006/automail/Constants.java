@@ -1,4 +1,4 @@
-package automail;
+package swen30006.automail;
 
 public final class Constants {
 	public static final boolean STRONG = true;

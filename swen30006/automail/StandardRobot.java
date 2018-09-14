@@ -1,6 +1,6 @@
-package automail;
+package swen30006.automail;
 
-import strategies.IMailPool;
+import swen30006.strategies.IMailPool;
 
 public class StandardRobot extends Robot {
 

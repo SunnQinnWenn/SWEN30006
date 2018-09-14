@@ -1,23 +1,25 @@
-package strategies;
+package swen30006.strategies;
 
 import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.ListIterator;
 import java.util.function.Consumer;
 
-import automail.MailItem;
-import automail.PriorityMailItem;
-import automail.Robot;
-import automail.StorageTube;
-import exceptions.TubeFullException;
-import exceptions.FragileItemBrokenException;
+import swen30006.automail.MailItem;
+import swen30006.automail.PriorityMailItem;
+import swen30006.automail.Robot;
+import swen30006.automail.StorageTube;
+import swen30006.exceptions.TubeFullException;
+import swen30006.strategies.IMailPool;
+import swen30006.exceptions.FragileItemBrokenException;
 
 public class MyMailPool implements IMailPool {
 	private class Item {
 		int priority;
 		int destination;
 		boolean heavy;
-		MailItem mailItem;
+		boolean fragile;
+		MailItem mailItem;	
 		// Use stable sort to keep arrival time relative positions
 		
 		public Item(MailItem mailItem) {
@@ -25,6 +27,7 @@ public class MyMailPool implements IMailPool {
 			heavy = mailItem.getWeight() >= 2000;
 			destination = mailItem.getDestFloor();
 			this.mailItem = mailItem;
+			fragile = mailItem.getFragile();
 		}
 	}
 	
@@ -46,33 +49,51 @@ public class MyMailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
-//	private static final int MAX_TAKE = 4;
+	private LinkedList<Item> fragilePool;
 	private LinkedList<Robot> robots;
 	private int lightCount;
+	private int count;
 
 	public MyMailPool(){
 		// Start empty
 		pool = new LinkedList<Item>();
+		fragilePool = new LinkedList<Item>();
 		lightCount = 0;
 		robots = new LinkedList<Robot>();
 	}
-
+	
 	public void addToPool(MailItem mailItem) {
 		Item item = new Item(mailItem);
-		pool.add(item);
-		if (!item.heavy) lightCount++;
-		pool.sort(new ItemComparator());
+		if (item.fragile) {
+			fragilePool.add(item);
+			fragilePool.sort(new ItemComparator());
+		}
+		else {
+			pool.add(item);
+			if (!item.heavy) lightCount++;
+			pool.sort(new ItemComparator());
+		}
 	}
 	
 	@Override
 	public void step() throws FragileItemBrokenException {
 		for (Robot robot: (Iterable<Robot>) robots::iterator) { fillStorageTube(robot); }
+		//System.out.println(this.pool.size() + " " + this.fragilePool.size());
 	}
 	
 	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
 		StorageTube tube = robot.getTube();
 		StorageTube temp = new StorageTube(tube.getCapacity(), tube.getCareful());
 		try { // Get as many items as available or as fit
+				if (robot.isCareful() && !fragilePool.isEmpty()) {
+					if(temp.getSize() < temp.getCapacity() && !robot.getTube().getHaveFragile()) {
+						Item item = fragilePool.remove();
+						temp.addItem(item.mailItem);
+						while (!temp.isEmpty()) tube.addItem(temp.pop());
+						robot.dispatch();
+						return;
+					}	
+				}
 				if (robot.isStrong()) {
 					while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
 						Item item = pool.remove();

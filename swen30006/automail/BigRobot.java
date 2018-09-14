@@ -1,5 +1,5 @@
-package automail;
-import strategies.IMailPool;
+package swen30006.automail;
+import swen30006.strategies.IMailPool;
 
 public class BigRobot extends Robot {
     public BigRobot(IMailDelivery delivery, IMailPool mailPool) {

@@ -1,4 +1,4 @@
-package automail;
+package swen30006.automail;
 
 public class PriorityMailItem extends MailItem{
 	

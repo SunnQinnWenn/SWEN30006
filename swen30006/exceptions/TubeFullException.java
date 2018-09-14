@@ -1,4 +1,4 @@
-package exceptions;
+package swen30006.exceptions;
 
 /**
  * This exception is thrown when a MailItem is added to a StorageTube which does not have the
