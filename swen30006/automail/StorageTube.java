@@ -50,6 +50,9 @@ public class StorageTube {
      */
     public void addItem(MailItem item) throws TubeFullException, FragileItemBrokenException {
         if(tube.size() < capacity){
+        	if (item.getFragile() && !careful || item.getFragile() && containFragile) {
+        		throw new FragileItemBrokenException();
+        	} 
         	if (tube.isEmpty()) {
         		tube.add(item);
         		//Fragile check
@@ -65,9 +68,6 @@ public class StorageTube {
         		}
         	} 
         	//Item is fragile, and robot not careful or already contain fragile item = break
-        	else if (item.getFragile() && !careful || item.getFragile() && containFragile) {
-        		throw new FragileItemBrokenException();
-        	} 
         	else {
         		tube.add(item);
         		if (item.getFragile()) {
@@ -84,13 +84,19 @@ public class StorageTube {
     	return tube.size();
     }
     
+    /** @return the capacity of the tube **/
     public int getCapacity() {
     	return this.capacity;
     }
     
     /** @return whether tube contains a fragile item **/
-    public boolean getFragile() {
+    public boolean getHaveFragile() {
     	return this.containFragile;
+    }
+    
+    /** set whether tube contains fragile item **/
+    public void setHaveFragile(boolean haveFragile) {
+    	this.containFragile = haveFragile;
     }
     
     /** @return whether tube is held by careful robot or not **/

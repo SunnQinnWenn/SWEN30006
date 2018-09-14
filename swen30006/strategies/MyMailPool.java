@@ -75,7 +75,6 @@ public class MyMailPool implements IMailPool {
 		try { // Get as many items as available or as fit
 				if (robot.isStrong()) {
 					while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
-						System.out.println("CCCCCC");
 						Item item = pool.remove();
 						if (!item.heavy) lightCount--;
 						temp.addItem(item.mailItem);
