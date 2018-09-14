@@ -16,34 +16,19 @@ public class CarefulRobot extends Robot {
         firstStep = true;
     }
 
-    // The CarefulRobot will not move at the first step
-    public void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException {
-        if (this.current_state == RobotState.DELIVERING) {
-        	if (firstStep) {
-        		firstStep = false;
-        	}
-        	else {
-        		super.step();
-        		firstStep = true;
-        	}
-        }
-        else if (this.current_state == RobotState.RETURNING) {
-        	if (firstStep) {
-        		firstStep = false;
-        	}
-        	else {
-        		super.step();
-        		firstStep = true;
-        	}
-        }
-        else if (this.current_state == RobotState.WAITING) {
-        	firstStep = true;
-        	super.step();
-        }
-        else {
-            super.step();
-        }
-        
 
+
+    /**
+     * Generic function that moves the robot towards the destination
+     * @param destination the floor towards which the robot is moving
+     */
+    public void moveTowards(int destination) throws FragileItemBrokenException {
+
+        if (!firstStep){
+            super.moveTowards(destination);
+            firstStep = true;
+        } else {
+            firstStep = false;
+        }
     }
 }
