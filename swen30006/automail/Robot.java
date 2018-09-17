@@ -156,7 +156,7 @@ public abstract class Robot {
      */
     public void moveTowards(int destination) throws FragileItemBrokenException {
     	if (!this.careful) {
-    		if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
+    		if (deliveryItem != null && deliveryItem.getFragile()) throw new FragileItemBrokenException();
     	}
         if(current_floor < destination){
         	current_floor++;

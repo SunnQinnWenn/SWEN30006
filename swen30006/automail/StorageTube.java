@@ -71,7 +71,7 @@ public class StorageTube {
         	else {
         		tube.add(item);
         		if (item.getFragile()) {
-        			this.containFragile = true;
+                    throw new FragileItemBrokenException();
         		}
         	}
         } else {

@@ -112,7 +112,6 @@ public class Simulation {
 				System.out.println("Simulation unable to complete.");
 				System.exit(0);
 			}
-            System.out.println(MAIL_DELIVERED.size() + " " + mailGenerator.MAIL_TO_CREATE);
             Clock.Tick();
         }
         printResults();
