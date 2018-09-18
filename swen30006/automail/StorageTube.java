@@ -70,8 +70,6 @@ public class StorageTube {
     }
 
 
-
-
     /** @return the size of the tube **/
     public int getSize(){
     	return tube.size();

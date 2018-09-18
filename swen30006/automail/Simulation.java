@@ -103,7 +103,6 @@ public class Simulation {
             /* priority = */ mailGenerator.step();
             try {
                 automail.mailPool.step();
-//				for (int i=0; i<3; i++) automail.robots[i].step();
 				for (Robot r : automail.robots) {
 					r.step();
 				}

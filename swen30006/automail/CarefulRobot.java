@@ -11,7 +11,9 @@ public class CarefulRobot extends Robot {
 
     public CarefulRobot(IMailDelivery delivery, IMailPool mailPool) {
         super(delivery, mailPool, Constants.CAREFUL, Constants.STRONG);
-        StorageTube tube = new StorageTube(3, Constants.CAREFUL);
+
+        int tubeSize = 3;
+        StorageTube tube = new StorageTube(tubeSize, Constants.CAREFUL);
         super.setTube(tube);
 
         firstStep = true;

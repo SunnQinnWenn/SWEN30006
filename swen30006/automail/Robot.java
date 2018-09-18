@@ -13,18 +13,24 @@ import java.util.TreeMap;
 public abstract class Robot {
 
     IMailDelivery delivery;
+
     private IMailPool mailPool;
+
     StorageTube tube;
+
     private boolean strong;
+
     private boolean careful;
 
     protected final String id;
 
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
+
     public RobotState current_state;
 
     private int current_floor;
+
     private int destination_floor;
 
     private boolean receivedDispatch;
@@ -135,9 +141,12 @@ public abstract class Robot {
      * @param destination the floor towards which the robot is moving
      */
     public void moveTowards(int destination) throws FragileItemBrokenException {
+        // if the robot is not careful and the item to deliver is fragile then throw an exception
     	if (!this.careful) {
     		if (deliveryItem != null && deliveryItem.getFragile()) throw new FragileItemBrokenException();
     	}
+
+    	// update the current_floor
         if(current_floor < destination){
         	current_floor++;
         }

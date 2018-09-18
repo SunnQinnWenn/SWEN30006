@@ -78,43 +78,43 @@ public class MyMailPool implements IMailPool {
 	@Override
 	public void step() throws FragileItemBrokenException {
 		for (Robot robot: (Iterable<Robot>) robots::iterator) { fillStorageTube(robot); }
-		//System.out.println(this.pool.size() + " " + this.fragilePool.size());
 	}
 	
 	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
 		StorageTube tube = robot.getTube();
 		StorageTube temp = new StorageTube(tube.getCapacity(), tube.getCareful());
-		try { // Get as many items as available or as fit
-				if (robot.isCareful() && !fragilePool.isEmpty()) {
-					if(temp.getSize() < temp.getCapacity() && !robot.getTube().getHaveFragile()) {
-						Item item = fragilePool.remove();
-						temp.addItem(item.mailItem);
-						while (!temp.isEmpty()) tube.addItem(temp.pop());
-						robot.dispatch();
-						return;
-					}	
+		try {
+
+			if (robot.isCareful() && !fragilePool.isEmpty()) {
+				// if the robot is careful and there are fragile mail items, then add an fragile item to the tube
+				Item item = fragilePool.remove();
+				temp.addItem(item.mailItem);
+
+			} else if (robot.isStrong()) {
+				// if the robot is strong, then get as many items as available or as fit
+				while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
+					Item item = pool.remove();
+					if (!item.heavy) lightCount--;
+					temp.addItem(item.mailItem);
 				}
-				if (robot.isStrong()) {
-					while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
-						Item item = pool.remove();
-						if (!item.heavy) lightCount--;
+			} else {
+				// if the robot is weak, then get as many light items as it can
+				ListIterator<Item> i = pool.listIterator();
+				while(temp.getSize() < temp.getCapacity() && lightCount > 0) {
+					Item item = i.next();
+					if (!item.heavy) {
 						temp.addItem(item.mailItem);
-					}
-				} else {
-					ListIterator<Item> i = pool.listIterator();
-					while(temp.getSize() < temp.getCapacity() && lightCount > 0) {
-						Item item = i.next();
-						if (!item.heavy) {
-							temp.addItem(item.mailItem);
-							i.remove();
-							lightCount--;
-						}
+						i.remove();
+						lightCount--;
 					}
 				}
-				if (temp.getSize() > 0) {
-					while (!temp.isEmpty()) tube.addItem(temp.pop());
-					robot.dispatch();
-				}
+			}
+
+			// if the temp tube contains items, add them to the robot's tube and dispatch it
+			if (temp.getSize() > 0) {
+				while (!temp.isEmpty()) tube.addItem(temp.pop());
+				robot.dispatch();
+			}
 		}
 		catch(TubeFullException e){
 			e.printStackTrace();
