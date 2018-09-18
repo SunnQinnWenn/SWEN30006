@@ -6,7 +6,6 @@ public class BigRobot extends Robot {
 
         super(delivery, mailPool, Constants.CARELESS, Constants.STRONG);
         StorageTube tube = new StorageTube(6, Constants.CARELESS);
-        super.createTube(tube);
-//        System.out.println("A BigRobot is created ");
+        super.setTube(tube);
     }
 }

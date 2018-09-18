@@ -7,8 +7,7 @@ public class WeakRobot extends Robot {
 
 		super(delivery, mailPool, Constants.CARELESS, Constants.WEAK);
 		StorageTube tube = new StorageTube(4, Constants.CARELESS);
-		super.createTube(tube);
-//		System.out.println("A WeakRobot is created ");
+		super.setTube(tube);
 	}
 
 }

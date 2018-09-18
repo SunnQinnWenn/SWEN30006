@@ -200,7 +200,7 @@ public abstract class Robot {
 	}
 
 
-	protected void createTube(StorageTube tube) {
+	protected void setTube(StorageTube tube) {
 		this.tube = tube;
 	}
 	
