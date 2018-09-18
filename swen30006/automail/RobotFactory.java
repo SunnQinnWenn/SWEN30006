@@ -6,6 +6,7 @@ public class RobotFactory {
 
 	public Robot createRobot(IMailDelivery delivery, IMailPool mailPool, Simulation.RobotType robotType){
 
+	    // create different robots depending on the given robot type
 	    switch (robotType) {
             case Standard:
                 return new StandardRobot(delivery, mailPool);

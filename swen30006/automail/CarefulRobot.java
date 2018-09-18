@@ -6,6 +6,7 @@ import swen30006.strategies.IMailPool;
 
 public class CarefulRobot extends Robot {
 
+    // a boolean flag to check if robot is taking the first step
     private boolean firstStep;
 
     public CarefulRobot(IMailDelivery delivery, IMailPool mailPool) {
@@ -23,7 +24,7 @@ public class CarefulRobot extends Robot {
      * @param destination the floor towards which the robot is moving
      */
     public void moveTowards(int destination) throws FragileItemBrokenException {
-
+        // careful robot only moves if it is not the first step
         if (!firstStep){
             super.moveTowards(destination);
             firstStep = true;

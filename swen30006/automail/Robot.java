@@ -18,11 +18,12 @@ public abstract class Robot {
     private boolean strong;
     private boolean careful;
 
-
     protected final String id;
+
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
     public RobotState current_state;
+
     private int current_floor;
     private int destination_floor;
 
@@ -36,13 +37,11 @@ public abstract class Robot {
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
-     * @param behaviour governs selection of mail items for delivery and behaviour on priority arrivals
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
+     * @param careful is whether the robot can carry fragile items
      * @param strong is whether the robot can carry heavy items
      */
-
-
     public Robot(IMailDelivery delivery, IMailPool mailPool, boolean careful, boolean strong){
         this.delivery = delivery;
         this.mailPool = mailPool;
@@ -169,6 +168,10 @@ public abstract class Robot {
 		return tube;
 	}
 
+    /**
+     * Set the robot's tube to be the given tube
+     * @param tube the tube to be set
+     */
     protected void setTube(StorageTube tube) {
         this.tube = tube;
     }

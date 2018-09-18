@@ -14,8 +14,9 @@ public class StorageTube {
 
     /**
      * Constructor for the storage tube
+     * @param capacity: how many items can the tube hold
+     * @param careful: if the tube can hold fragile items
      */
-    
     public StorageTube(int capacity, boolean careful) {
     	this.tube = new Stack<MailItem>();
     	this.capacity = capacity;
@@ -43,41 +44,33 @@ public class StorageTube {
     	return tube.peek();
     }
 
+
     /**
      * Add an item to the tube
      * @param item The item being added
      * @throws TubeFullException thrown if an item is added which exceeds the capacity
      */
     public void addItem(MailItem item) throws TubeFullException, FragileItemBrokenException {
-        if(tube.size() < capacity){
-        	if (item.getFragile() && !careful || item.getFragile() && containFragile) {
-        		throw new FragileItemBrokenException();
-        	} 
-        	if (tube.isEmpty()) {
-        		tube.add(item);
-        		//Fragile check
-        		if (item.getFragile()) {
-        			//robot is not a careful robot, item break
-        			if (!careful) {
-        				throw new FragileItemBrokenException();
-        			}
-        			//robot is careful robot, mark that tube contains fragile item
-        			else {
-        				this.containFragile = true;
-        			}
-        		}
-        	} 
-        	//Item is fragile, and robot not careful or already contain fragile item = break
-        	else {
-        		tube.add(item);
-        		if (item.getFragile()) {
+        // add to the tube if it is not full
+        if (tube.size() < capacity) {
+            // if the item is fragile, it can only be added if the robot is careful and the tube is empty
+            if (item.getFragile()) {
+                if (careful && tube.isEmpty()) {
+                    tube.add(item);
+                    this.containFragile = true;
+                } else {
                     throw new FragileItemBrokenException();
-        		}
-        	}
+                }
+            } else {
+                tube.add(item);
+            }
         } else {
             throw new TubeFullException();
         }
     }
+
+
+
 
     /** @return the size of the tube **/
     public int getSize(){
@@ -104,6 +97,7 @@ public class StorageTube {
      */
     public MailItem pop(){
         if (this.peek().getFragile() == true) {
+            // update the flag
             this.setHaveFragile(false);
         }
         return tube.pop();
