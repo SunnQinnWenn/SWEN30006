@@ -42,20 +42,6 @@ public abstract class Robot {
      * @param strong is whether the robot can carry heavy items
      */
 
-    /*
-    public Robot(IMailDelivery delivery, IMailPool mailPool){
-    	id = "R" + hashCode();
-        // current_state = RobotState.WAITING;
-    	current_state = RobotState.RETURNING;
-        current_floor = Building.MAILROOM_LOCATION;
-        this.delivery = delivery;
-        this.mailPool = mailPool;
-        this.receivedDispatch = false;
-        this.strong = false;
-        this.careful = false;
-        this.deliveryCounter = 0;
-    }
-     */
 
     public Robot(IMailDelivery delivery, IMailPool mailPool, boolean careful, boolean strong){
         this.delivery = delivery;
@@ -69,11 +55,6 @@ public abstract class Robot {
         this.current_floor = Building.MAILROOM_LOCATION;
         this.receivedDispatch = false;
         this.deliveryCounter = 0;
-    }
-
-    // default contructor
-    public Robot(){
-        this.id = "";
     }
 
 
@@ -187,7 +168,11 @@ public abstract class Robot {
 	public StorageTube getTube() {
 		return tube;
 	}
-    
+
+    protected void setTube(StorageTube tube) {
+        this.tube = tube;
+    }
+
 	static private int count = 0;
 	static private Map<Integer, Integer> hashMap = new TreeMap<Integer, Integer>();
 
@@ -199,18 +184,6 @@ public abstract class Robot {
 		return hash;
 	}
 
-
-	protected void setTube(StorageTube tube) {
-		this.tube = tube;
-	}
-	
-	protected void setStrong(Boolean strong) {
-		this.strong = strong;
-	}
-	
-	protected void setCareful(Boolean careful) {
-		this.careful = careful;
-	}
 	
 	public boolean isStrong() {
     	return strong;

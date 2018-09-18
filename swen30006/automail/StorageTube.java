@@ -93,26 +93,27 @@ public class StorageTube {
     public boolean getHaveFragile() {
     	return this.containFragile;
     }
-    
-    /** set whether tube contains fragile item **/
-    public void setHaveFragile(boolean haveFragile) {
-    	this.containFragile = haveFragile;
-    }
-    
+
     /** @return whether tube is held by careful robot or not **/
     public boolean getCareful() {
-    	return this.careful;
+        return this.careful;
     }
-    
-    /** 
+
+    /**
      * @return the first item in the storage tube (after removing it)
      */
     public MailItem pop(){
-    	if (this.peek().getFragile() == true) {
-    		this.setHaveFragile(false);
-    	}
+        if (this.peek().getFragile() == true) {
+            this.setHaveFragile(false);
+        }
         return tube.pop();
     }
+
+    /** set whether tube contains fragile item **/
+    private void setHaveFragile(boolean haveFragile) {
+    	this.containFragile = haveFragile;
+    }
+
 
 
 }
